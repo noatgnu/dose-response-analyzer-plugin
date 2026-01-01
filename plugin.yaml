@@ -6,6 +6,7 @@ plugin:
   author: "CauldronGO Team"
   category: "analysis"
   icon: "timeline"
+  repository: "https://github.com/noatgnu/dose-response-analyzer"
 
 runtime:
   environments: ["python"]
@@ -160,11 +161,7 @@ execution:
 
   requirements:
     python: ">=3.11"
-    packages:
-      - "pandas>=2.0.0"
-      - "numpy>=1.24.0"
-      - "matplotlib>=3.7.0"
-      - "dra>=0.1.0"
+    pythonRequirementsFile: "requirements.txt"
 
 example:
   enabled: true

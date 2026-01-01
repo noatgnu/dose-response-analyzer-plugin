@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plugin Documentation</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            border-bottom: 2px solid #2196f3;
+            padding-bottom: 10px;
+            color: #1976d2;
+        }
+        h2 {
+            margin-top: 30px;
+            color: #1976d2;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 5px;
+        }
+        h3 {
+            margin-top: 20px;
+            color: #424242;
+        }
+        h4 {
+            color: #616161;
+        }
+        a {
+            color: #2196f3;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        blockquote {
+            border-left: 4px solid #2196f3;
+            margin: 0;
+            padding-left: 15px;
+            color: #666;
+            background: #f5f9fc;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #2196f3;
+            color: white;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        ul, ol {
+            padding-left: 25px;
+        }
+        li {
+            margin: 5px 0;
+        }
+        strong {
+            font-weight: 600;
+            color: #1976d2;
+        }
+        .mermaid {
+            text-align: center;
+            margin: 20px 0;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+<h1 id="dose-response-analysis">Dose-Response Analysis</h1>
+<h2 id="installation">Installation</h2>
+<p><a href="cauldron://install?repo=https%3A%2F%2Fgithub.com%2Fnoatgnu%2Fdose-response-analyzer">⬇️ <strong>Click here to install in Cauldron</strong></a></p>
+<blockquote>
+<p><strong>Repository</strong>: <code>https://github.com/noatgnu/dose-response-analyzer</code></p>
+</blockquote>
+<p><strong>Manual installation:</strong></p>
+<ol>
+<li>Open Cauldron</li>
+<li>Go to <strong>Plugins</strong> → <strong>Install from Repository</strong></li>
+<li>Paste: <code>https://github.com/noatgnu/dose-response-analyzer</code></li>
+<li>Click <strong>Install</strong></li>
+</ol>
+<p><strong>ID</strong>: <code>dose-response</code><br>
+<strong>Version</strong>: 1.0.0<br>
+<strong>Category</strong>: analysis<br>
+<strong>Author</strong>: CauldronGO Team</p>
+<h2 id="description">Description</h2>
+<p>Fit dose-response curves and calculate IC50 values for compound screening data</p>
+<h2 id="runtime">Runtime</h2>
+<ul>
+<li>
+<p><strong>Environments</strong>: <code>python</code></p>
+</li>
+<li>
+<p><strong>Entrypoint</strong>: <code>dose_response_analyzer.py</code></p>
+</li>
+</ul>
+<h2 id="inputs">Inputs</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Label</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Visibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>input_file</code></td>
+<td>Input Data File</td>
+<td>file</td>
+<td>Yes</td>
+<td>-</td>
+<td>Always visible</td>
+</tr>
+<tr>
+<td><code>compound_col</code></td>
+<td>Compound Column</td>
+<td>text</td>
+<td>No</td>
+<td>Compound</td>
+<td>Always visible</td>
+</tr>
+<tr>
+<td><code>concentration_col</code></td>
+<td>Concentration Column</td>
+<td>text</td>
+<td>No</td>
+<td>Conc</td>
+<td>Always visible</td>
+</tr>
+<tr>
+<td><code>response_col</code></td>
+<td>Response Column</td>
+<td>text</td>
+<td>No</td>
+<td>Rab10</td>
+<td>Always visible</td>
+</tr>
+<tr>
+<td><code>enable_custom_models</code></td>
+<td>Enable Custom Models</td>
+<td>boolean</td>
+<td>No</td>
+<td>true</td>
+<td>Always visible</td>
+</tr>
+<tr>
+<td><code>selection_metric</code></td>
+<td>Model Selection Metric</td>
+<td>select (rmse, aic, bic, r2)</td>
+<td>No</td>
+<td>rmse</td>
+<td>Always visible</td>
+</tr>
+<tr>
+<td><code>show_ic50_lines</code></td>
+<td>Show IC50 Lines</td>
+<td>boolean</td>
+<td>No</td>
+<td>true</td>
+<td>Always visible</td>
+</tr>
+<tr>
+<td><code>show_dmax_lines</code></td>
+<td>Show Dmax Lines</td>
+<td>boolean</td>
+<td>No</td>
+<td>true</td>
+<td>Always visible</td>
+</tr>
+<tr>
+<td><code>file_format</code></td>
+<td>Output Format</td>
+<td>select (svg, png, pdf)</td>
+<td>No</td>
+<td>svg</td>
+<td>Always visible</td>
+</tr>
+<tr>
+<td><code>add_timestamp</code></td>
+<td>Add Timestamp</td>
+<td>boolean</td>
+<td>No</td>
+<td>true</td>
+<td>Always visible</td>
+</tr>
+<tr>
+<td><code>create_overlay</code></td>
+<td>Create Overlay Plot</td>
+<td>boolean</td>
+<td>No</td>
+<td>false</td>
+<td>Always visible</td>
+</tr>
+<tr>
+<td><code>overlay_compounds</code></td>
+<td>Overlay Compounds</td>
+<td>text</td>
+<td>No</td>
+<td>-</td>
+<td>Visible when <code>create_overlay</code> = <code>true</code></td>
+</tr>
+<tr>
+<td><code>compound_colors</code></td>
+<td>Compound Colors</td>
+<td>text</td>
+<td>No</td>
+<td>-</td>
+<td>Visible when <code>create_overlay</code> = <code>true</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="input-details">Input Details</h3>
+<h4 id="input-data-file-input-file">Input Data File (<code>input_file</code>)</h4>
+<p>Data file containing compound, concentration, and response values</p>
+<h4 id="compound-column-compound-col">Compound Column (<code>compound_col</code>)</h4>
+<p>Column name for compound identifiers</p>
+<h4 id="concentration-column-concentration-col">Concentration Column (<code>concentration_col</code>)</h4>
+<p>Column name for concentration values</p>
+<h4 id="response-column-response-col">Response Column (<code>response_col</code>)</h4>
+<p>Column name for response values</p>
+<h4 id="enable-custom-models-enable-custom-models">Enable Custom Models (<code>enable_custom_models</code>)</h4>
+<p>Include extended set of dose-response models</p>
+<h4 id="model-selection-metric-selection-metric">Model Selection Metric (<code>selection_metric</code>)</h4>
+<p>Metric used to select the best fitting model</p>
+<ul>
+<li><strong>Options</strong>: <code>rmse</code>, <code>aic</code>, <code>bic</code>, <code>r2</code></li>
+</ul>
+<h4 id="show-ic50-lines-show-ic50-lines">Show IC50 Lines (<code>show_ic50_lines</code>)</h4>
+<p>Display IC50 reference lines on plots</p>
+<h4 id="show-dmax-lines-show-dmax-lines">Show Dmax Lines (<code>show_dmax_lines</code>)</h4>
+<p>Display Dmax reference lines on plots</p>
+<h4 id="output-format-file-format">Output Format (<code>file_format</code>)</h4>
+<p>File format for output plots</p>
+<ul>
+<li><strong>Options</strong>: <code>svg</code>, <code>png</code>, <code>pdf</code></li>
+</ul>
+<h4 id="add-timestamp-add-timestamp">Add Timestamp (<code>add_timestamp</code>)</h4>
+<p>Add timestamp to output filenames</p>
+<h4 id="create-overlay-plot-create-overlay">Create Overlay Plot (<code>create_overlay</code>)</h4>
+<p>Create a plot with multiple compounds overlaid</p>
+<h4 id="overlay-compounds-overlay-compounds">Overlay Compounds (<code>overlay_compounds</code>)</h4>
+<p>Comma-separated list of compounds to overlay on one plot</p>
+<ul>
+<li><strong>Placeholder</strong>: <code>CompoundA,CompoundB,CompoundC</code></li>
+</ul>
+<h4 id="compound-colors-compound-colors">Compound Colors (<code>compound_colors</code>)</h4>
+<p>Semicolon-separated compound:color pairs for overlay plot</p>
+<ul>
+<li><strong>Placeholder</strong>: <code>CompoundA:#ff0000;CompoundB:#00ff00</code></li>
+</ul>
+<h2 id="outputs">Outputs</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>File</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>summary_table</code></td>
+<td><code>summary_table.txt</code></td>
+<td>data</td>
+<td>tsv</td>
+<td>Summary statistics for all fitted models</td>
+</tr>
+<tr>
+<td><code>best_models</code></td>
+<td><code>best_models.txt</code></td>
+<td>data</td>
+<td>tsv</td>
+<td>Best fitting model parameters and IC50 values for each compound</td>
+</tr>
+<tr>
+<td><code>dose_response_plots</code></td>
+<td><code>dose_response*.svg</code></td>
+<td>image</td>
+<td>svg</td>
+<td>Individual dose-response curve plots for each compound</td>
+</tr>
+<tr>
+<td><code>overlay_plot</code></td>
+<td><code>overlay*.svg</code></td>
+<td>image</td>
+<td>svg</td>
+<td>Overlay plot with multiple compounds (if overlay_compounds specified)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li><strong>Python Version</strong>: &gt;=3.11</li>
+</ul>
+<h3 id="python-dependencies-external-file">Python Dependencies (External File)</h3>
+<p>Dependencies are defined in: <code>requirements.txt</code></p>
+<ul>
+<li><code>click</code></li>
+<li><code>numpy&gt;=1.24.0</code></li>
+<li><code>pandas&gt;=2.0.0</code></li>
+<li><code>matplotlib&gt;=3.7.0</code></li>
+<li><code>dra&gt;=0.1.0</code></li>
+</ul>
+<blockquote>
+<p><strong>Note</strong>: When you create a custom environment for this plugin, these dependencies will be automatically installed.</p>
+</blockquote>
+<h2 id="example-data">Example Data</h2>
+<p>This plugin includes example data for testing:</p>
+<pre><code class="language-yaml">  compound_col: Compound
+  response_col: Rab10
+  selection_metric: rmse
+  show_dmax_lines: true
+  file_format: svg
+  input_file: dose_response/example_data.csv
+  concentration_col: Conc
+  enable_custom_models: true
+  show_ic50_lines: true
+  create_overlay: false
+</code></pre>
+<p>Load example data by clicking the <strong>Load Example</strong> button in the UI.</p>
+<h2 id="usage">Usage</h2>
+<h3 id="via-ui">Via UI</h3>
+<ol>
+<li>Navigate to <strong>analysis</strong> → <strong>Dose-Response Analysis</strong></li>
+<li>Fill in the required inputs</li>
+<li>Click <strong>Run Analysis</strong></li>
+</ol>
+<h3 id="via-plugin-system">Via Plugin System</h3>
+<pre><code class="language-typescript">const jobId = await pluginService.executePlugin('dose-response', {
+  // Add parameters here
+});
+</code></pre>
+
+</body>
+</html>

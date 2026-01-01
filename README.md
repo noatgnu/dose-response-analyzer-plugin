@@ -1,5 +1,19 @@
 # Dose-Response Analysis
 
+
+## Installation
+
+**[⬇️ Click here to install in Cauldron](http://localhost:50060/install?repo=https%3A%2F%2Fgithub.com%2Fnoatgnu%2Fdose-response-analyzer)** _(requires Cauldron to be running)_
+
+> **Repository**: `https://github.com/noatgnu/dose-response-analyzer`
+
+**Manual installation:**
+
+1. Open Cauldron
+2. Go to **Plugins** → **Install from Repository**
+3. Paste: `https://github.com/noatgnu/dose-response-analyzer`
+4. Click **Install**
+
 **ID**: `dose-response`  
 **Version**: 1.0.0  
 **Category**: analysis  
@@ -11,8 +25,9 @@ Fit dose-response curves and calculate IC50 values for compound screening data
 
 ## Runtime
 
-- **Type**: `python`
-- **Script**: `dose_response_analyzer.py`
+- **Environments**: `python`
+
+- **Entrypoint**: `dose_response_analyzer.py`
 
 ## Inputs
 
@@ -114,28 +129,35 @@ Semicolon-separated compound:color pairs for overlay plot
 
 ## Requirements
 
-- **Python**: >=3.11
-- **Packages**:
-  - pandas>=2.0.0
-  - numpy>=1.24.0
-  - matplotlib>=3.7.0
-  - dra>=0.1.0
+- **Python Version**: >=3.11
+
+### Python Dependencies (External File)
+
+Dependencies are defined in: `requirements.txt`
+
+- `click`
+- `numpy>=1.24.0`
+- `pandas>=2.0.0`
+- `matplotlib>=3.7.0`
+- `dra>=0.1.0`
+
+> **Note**: When you create a custom environment for this plugin, these dependencies will be automatically installed.
 
 ## Example Data
 
 This plugin includes example data for testing:
 
 ```yaml
-  file_format: svg
-  create_overlay: false
   input_file: dose_response/example_data.csv
   concentration_col: Conc
-  response_col: Rab10
-  show_ic50_lines: true
-  show_dmax_lines: true
-  compound_col: Compound
   enable_custom_models: true
+  show_ic50_lines: true
+  create_overlay: false
+  compound_col: Compound
+  response_col: Rab10
   selection_metric: rmse
+  show_dmax_lines: true
+  file_format: svg
 ```
 
 Load example data by clicking the **Load Example** button in the UI.
