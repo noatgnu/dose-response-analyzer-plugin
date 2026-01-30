@@ -2,7 +2,7 @@ plugin:
   id: "dose-response"
   name: "Dose-Response Analysis"
   description: "Fit dose-response curves and calculate IC50 values for compound screening data"
-  version: "1.0.0"
+  version: "1.0.1"
   author: "CauldronGO Team"
   category: "analysis"
   icon: "timeline"
