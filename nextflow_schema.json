@@ -1,0 +1,119 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "Dose-Response Analysis pipeline parameters",
+    "description": "Fit dose-response curves and calculate IC50 values for compound screening data",
+    "type": "object",
+    "definitions": {
+        "plugin_parameters": {
+            "title": "Plugin parameters",
+            "description": "Parameters for the Dose-Response Analysis plugin.",
+            "type": "object",
+            "properties": {
+                "add_timestamp": {
+                    "type": "boolean",
+                    "description": "Add timestamp to output filenames",
+                    "default": true
+                },
+                "compound_col": {
+                    "type": "string",
+                    "description": "Column name for compound identifiers",
+                    "default": "Compound"
+                },
+                "compound_colors": {
+                    "type": "string",
+                    "description": "Semicolon-separated compound:color pairs for overlay plot"
+                },
+                "concentration_col": {
+                    "type": "string",
+                    "description": "Column name for concentration values",
+                    "default": "Conc"
+                },
+                "create_overlay": {
+                    "type": "boolean",
+                    "description": "Create a plot with multiple compounds overlaid",
+                    "default": false
+                },
+                "enable_custom_models": {
+                    "type": "boolean",
+                    "description": "Include extended set of dose-response models",
+                    "default": true
+                },
+                "file_format": {
+                    "type": "string",
+                    "description": "File format for output plots",
+                    "default": "svg"
+                },
+                "input_file": {
+                    "type": "string",
+                    "description": "Data file containing compound, concentration, and response values",
+                    "format": "file-path"
+                },
+                "overlay_compounds": {
+                    "type": "string",
+                    "description": "Comma-separated list of compounds to overlay on one plot"
+                },
+                "response_col": {
+                    "type": "string",
+                    "description": "Column name for response values",
+                    "default": "Rab10"
+                },
+                "selection_metric": {
+                    "type": "string",
+                    "description": "Metric used to select the best fitting model",
+                    "default": "rmse"
+                },
+                "show_dmax_lines": {
+                    "type": "boolean",
+                    "description": "Display Dmax reference lines on plots",
+                    "default": true
+                },
+                "show_ic50_lines": {
+                    "type": "boolean",
+                    "description": "Display IC50 reference lines on plots",
+                    "default": true
+                }
+            }
+        }
+    },
+    "properties": {
+        "add_timestamp": {
+            "$ref": "#/definitions/plugin_parameters/properties/add_timestamp"
+        },
+        "compound_col": {
+            "$ref": "#/definitions/plugin_parameters/properties/compound_col"
+        },
+        "compound_colors": {
+            "$ref": "#/definitions/plugin_parameters/properties/compound_colors"
+        },
+        "concentration_col": {
+            "$ref": "#/definitions/plugin_parameters/properties/concentration_col"
+        },
+        "create_overlay": {
+            "$ref": "#/definitions/plugin_parameters/properties/create_overlay"
+        },
+        "enable_custom_models": {
+            "$ref": "#/definitions/plugin_parameters/properties/enable_custom_models"
+        },
+        "file_format": {
+            "$ref": "#/definitions/plugin_parameters/properties/file_format"
+        },
+        "input_file": {
+            "$ref": "#/definitions/plugin_parameters/properties/input_file"
+        },
+        "overlay_compounds": {
+            "$ref": "#/definitions/plugin_parameters/properties/overlay_compounds"
+        },
+        "response_col": {
+            "$ref": "#/definitions/plugin_parameters/properties/response_col"
+        },
+        "selection_metric": {
+            "$ref": "#/definitions/plugin_parameters/properties/selection_metric"
+        },
+        "show_dmax_lines": {
+            "$ref": "#/definitions/plugin_parameters/properties/show_dmax_lines"
+        },
+        "show_ic50_lines": {
+            "$ref": "#/definitions/plugin_parameters/properties/show_ic50_lines"
+        }
+    }
+}

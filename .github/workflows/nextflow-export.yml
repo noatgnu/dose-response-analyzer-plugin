@@ -1,0 +1,131 @@
+name: Export to Nextflow
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'plugin.yaml'
+      - '**.py'
+      - '**.R'
+      - 'requirements.txt'
+      - 'Dockerfile'
+  pull_request:
+    paths:
+      - 'plugin.yaml'
+      - '**.py'
+      - '**.R'
+      - 'requirements.txt'
+      - 'Dockerfile'
+
+jobs:
+  validate-nextflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Plugin Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Setup Nextflow
+        uses: nf-core/setup-nextflow@v2
+
+      - name: Install Cauldron CLI
+        run: |
+          go install github.com/noatgnu/cauldron-go/cmd/plugin-to-nextflow@latest
+
+      - name: Generate Nextflow Pipeline
+        run: |
+          plugin-to-nextflow --plugin plugin.yaml --output .
+
+      - name: Validate Nextflow Syntax
+        run: |
+          nextflow run main.nf -preview
+
+  test-with-examples:
+    runs-on: ubuntu-latest
+    needs: validate-nextflow
+    steps:
+      - name: Checkout Plugin Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Setup Nextflow
+        uses: nf-core/setup-nextflow@v2
+
+      - name: Install Cauldron CLI
+        run: |
+          go install github.com/noatgnu/cauldron-go/cmd/plugin-to-nextflow@latest
+
+      - name: Generate Nextflow Pipeline
+        run: |
+          plugin-to-nextflow --plugin plugin.yaml --output .
+
+      - name: Check Example Data
+        run: |
+          
+          if [ ! -d "examples/dose_response" ]; then
+            echo "Warning: examples/dose_response directory not found"
+            exit 1
+          fi
+          
+          echo "All example directories found"
+
+      - name: Build Container
+        run: |
+          docker build -t cauldron/dose-response:1.0.1 -f containers/Dockerfile .
+
+      - name: Run Nextflow with Examples
+        run: |
+          nextflow run main.nf \
+          --selection_metric 'rmse' \
+          --create_overlay 'false' \
+          --compound_col 'Compound' \
+          --concentration_col 'Conc' \
+          --response_col 'Rab10' \
+          --enable_custom_models 'true' \
+          --show_ic50_lines 'true' \
+          --show_dmax_lines 'true' \
+          --file_format 'svg' \
+          --input_file examples/dose_response/example_data.csv \
+          -profile docker \
+          --outdir results
+
+  export-nextflow:
+    runs-on: ubuntu-latest
+    needs: [validate-nextflow, test-with-examples]
+    if: github.event_name == 'push'
+    steps:
+      - name: Checkout Plugin Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Install Cauldron CLI
+        run: |
+          go install github.com/noatgnu/cauldron-go/cmd/plugin-to-nextflow@latest
+
+      - name: Generate Nextflow Pipeline
+        run: |
+          plugin-to-nextflow --plugin plugin.yaml --output .
+
+      - name: Commit and Push Nextflow Files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add main.nf nextflow.config nextflow_schema.json modules/ containers/ README.md .github/
+          git diff --staged --quiet || git commit -m "Auto-generate Nextflow pipeline from plugin metadata"
+          git push
