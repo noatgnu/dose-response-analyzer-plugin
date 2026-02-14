@@ -108,16 +108,16 @@ jobs:
       - name: Run Nextflow with Examples
         run: |
           nextflow run main.nf \
+          --input_file examples/dose_response/example_data.csv \
           --concentration_col 'Conc' \
           --response_col 'Rab10' \
-          --enable_custom_models 'true' \
-          --show_dmax_lines 'true' \
           --selection_metric 'rmse' \
-          --show_ic50_lines 'true' \
+          --show_dmax_lines 'true' \
           --file_format 'svg' \
-          --create_overlay 'false' \
-          --input_file examples/dose_response/example_data.csv \
           --compound_col 'Compound' \
+          --enable_custom_models 'true' \
+          --show_ic50_lines 'true' \
+          --create_overlay 'false' \
           -profile docker \
           --outdir results
 

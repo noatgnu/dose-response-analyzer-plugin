@@ -156,16 +156,16 @@ jobs:
         run: |
           cd slivka-project
           JOB_RESPONSE=$(curl -s -X POST http://localhost:8000/api/services/dose-response/jobs \
-            -F "create_overlay=false" \
-            -F "compound_col=Compound" \
             -F "concentration_col=Conc" \
             -F "response_col=Rab10" \
-            -F "selection_metric=rmse" \
             -F "show_ic50_lines=true" \
+            -F "show_dmax_lines=true" \
             -F "file_format=svg" \
+            -F "create_overlay=false" \
             -F "input_file=@testdata/example_data.csv" \
             -F "enable_custom_models=true" \
-            -F "show_dmax_lines=true")
+            -F "selection_metric=rmse" \
+            -F "compound_col=Compound")
 
           JOB_ID=$(echo $JOB_RESPONSE | python -c "import sys,json; print(json.load(sys.stdin)['id'])")
           echo "Job ID: $JOB_ID"

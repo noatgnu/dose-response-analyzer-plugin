@@ -136,11 +136,9 @@ outputs:
     path: "best_models.txt"
     media-type: text/tab-separated-values
   dose_response_plots:
-    path: "dose_response*.svg"
-    media-type: image/svg+xml
+    path: "dose_response*.*"
   overlay_plot:
-    path: "overlay*.svg"
-    media-type: image/svg+xml
+    path: "overlay*.*"
 
 execution:
   runners:
@@ -150,13 +148,13 @@ execution:
 tests:
   - applicable-runners: ["default"]
     parameters:
-      input_file: dose_response/example_data.csv
-      enable_custom_models: true
-      show_dmax_lines: true
-      create_overlay: false
       compound_col: Compound
       concentration_col: Conc
       response_col: Rab10
-      selection_metric: rmse
       show_ic50_lines: true
+      show_dmax_lines: true
       file_format: svg
+      create_overlay: false
+      input_file: dose_response/example_data.csv
+      enable_custom_models: true
+      selection_metric: rmse

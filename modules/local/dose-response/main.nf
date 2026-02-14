@@ -24,8 +24,8 @@ process DOSE_RESPONSE {
     
     path "summary_table.txt", emit: summary_table, optional: true
     path "best_models.txt", emit: best_models, optional: true
-    path "dose_response*.svg", emit: dose_response_plots, optional: true
-    path "overlay*.svg", emit: overlay_plot, optional: true
+    path "dose_response*.*", emit: dose_response_plots, optional: true
+    path "overlay*.*", emit: overlay_plot, optional: true
     path "versions.yml", emit: versions
 
     script:
@@ -35,16 +35,10 @@ process DOSE_RESPONSE {
     ARG_LIST=()
 
     
-    # Mapping for compound_col
-    VAL="$compound_col"
+    # Mapping for response_col
+    VAL="$response_col"
     if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
-        ARG_LIST+=("--compound_col" "\$VAL")
-    fi
-    
-    # Mapping for concentration_col
-    VAL="$concentration_col"
-    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
-        ARG_LIST+=("--concentration_col" "\$VAL")
+        ARG_LIST+=("--response_col" "\$VAL")
     fi
     
     # Mapping for enable_custom_models
@@ -53,6 +47,20 @@ process DOSE_RESPONSE {
         if [ "\$VAL" = "true" ]; then
             ARG_LIST+=("--enable_custom_models")
         fi
+    fi
+    
+    # Mapping for show_dmax_lines
+    VAL="$show_dmax_lines"
+    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
+        if [ "\$VAL" = "true" ]; then
+            ARG_LIST+=("--show_dmax_lines")
+        fi
+    fi
+    
+    # Mapping for overlay_compounds
+    VAL="$overlay_compounds"
+    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
+        ARG_LIST+=("--overlay_compounds" "\$VAL")
     fi
     
     # Mapping for selection_metric
@@ -83,26 +91,6 @@ process DOSE_RESPONSE {
         fi
     fi
     
-    # Mapping for response_col
-    VAL="$response_col"
-    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
-        ARG_LIST+=("--response_col" "\$VAL")
-    fi
-    
-    # Mapping for show_dmax_lines
-    VAL="$show_dmax_lines"
-    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
-        if [ "\$VAL" = "true" ]; then
-            ARG_LIST+=("--show_dmax_lines")
-        fi
-    fi
-    
-    # Mapping for overlay_compounds
-    VAL="$overlay_compounds"
-    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
-        ARG_LIST+=("--overlay_compounds" "\$VAL")
-    fi
-    
     # Mapping for compound_colors
     VAL="$compound_colors"
     if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
@@ -113,6 +101,18 @@ process DOSE_RESPONSE {
     VAL="$input_file"
     if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
         ARG_LIST+=("--input_file" "\$VAL")
+    fi
+    
+    # Mapping for compound_col
+    VAL="$compound_col"
+    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
+        ARG_LIST+=("--compound_col" "\$VAL")
+    fi
+    
+    # Mapping for concentration_col
+    VAL="$concentration_col"
+    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
+        ARG_LIST+=("--concentration_col" "\$VAL")
     fi
     
     python /app/dose_response_analyzer.py \
