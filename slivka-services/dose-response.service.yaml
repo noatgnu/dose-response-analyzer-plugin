@@ -1,0 +1,162 @@
+# Slivka service configuration for dose-response
+# Generated from Cauldron plugin format
+#
+# For file inputs that reference large databases (e.g., FASTA databases),
+# consider configuring them as environment variables pointing to shared storage:
+#   env:
+#     DATABASE_PATH: "${SLIVKA_HOME}/databases/uniref90.fasta"
+# Then reference in args as: arg: "--db=${DATABASE_PATH}"
+
+slivka-version: "0.8"
+name: dose-response
+description: Fit dose-response curves and calculate IC50 values for compound screening data
+author: CauldronGO Team
+version: "1.0.1"
+license: MIT
+classifiers:
+  - "Topic :: Scientific/Engineering :: Bio-Informatics"
+
+parameters:
+  input_file:
+    name: "Input Data File"
+    description: "Data file containing compound, concentration, and response values"
+    type: file
+    required: true
+    media-type: text/csv
+  compound_col:
+    name: "Compound Column"
+    description: "Column name for compound identifiers"
+    type: text
+    default: Compound
+  concentration_col:
+    name: "Concentration Column"
+    description: "Column name for concentration values"
+    type: text
+    default: Conc
+  response_col:
+    name: "Response Column"
+    description: "Column name for response values"
+    type: text
+    default: Rab10
+  enable_custom_models:
+    name: "Enable Custom Models"
+    description: "Include extended set of dose-response models"
+    type: boolean
+    default: true
+  selection_metric:
+    name: "Model Selection Metric"
+    description: "Metric used to select the best fitting model"
+    type: choice
+    default: rmse
+    choices:
+      - rmse
+      - aic
+      - bic
+      - r2
+  show_ic50_lines:
+    name: "Show IC50 Lines"
+    description: "Display IC50 reference lines on plots"
+    type: boolean
+    default: true
+  show_dmax_lines:
+    name: "Show Dmax Lines"
+    description: "Display Dmax reference lines on plots"
+    type: boolean
+    default: true
+  file_format:
+    name: "Output Format"
+    description: "File format for output plots"
+    type: choice
+    default: svg
+    choices:
+      - svg
+      - png
+      - pdf
+  add_timestamp:
+    name: "Add Timestamp"
+    description: "Add timestamp to output filenames"
+    type: boolean
+    default: true
+  create_overlay:
+    name: "Create Overlay Plot"
+    description: "Create a plot with multiple compounds overlaid"
+    type: boolean
+    default: false
+  overlay_compounds:
+    name: "Overlay Compounds"
+    description: "Comma-separated list of compounds to overlay on one plot"
+    type: text
+  compound_colors:
+    name: "Compound Colors"
+    description: "Semicolon-separated compound:color pairs for overlay plot"
+    type: text
+
+command:
+  - python
+  - dose_response_analyzer.py
+
+args:
+  input_file:
+    arg: "--input_file=$(value)"
+    symlink: "input_file"
+  compound_col:
+    arg: "--compound_col=$(value)"
+  concentration_col:
+    arg: "--concentration_col=$(value)"
+  response_col:
+    arg: "--response_col=$(value)"
+  enable_custom_models:
+    arg: "--enable_custom_models"
+    condition: "$(value)"
+  selection_metric:
+    arg: "--selection_metric=$(value)"
+  show_ic50_lines:
+    arg: "--show_ic50_lines"
+    condition: "$(value)"
+  show_dmax_lines:
+    arg: "--show_dmax_lines"
+    condition: "$(value)"
+  file_format:
+    arg: "--file_format=$(value)"
+  add_timestamp:
+    arg: "--add_timestamp"
+    condition: "$(value)"
+  overlay_compounds:
+    arg: "--overlay_compounds=$(value)"
+  compound_colors:
+    arg: "--compound_colors=$(value)"
+  _output_dir:
+    arg: "--output_folder=."
+
+outputs:
+  summary_table:
+    path: "summary_table.txt"
+    media-type: text/tab-separated-values
+  best_models:
+    path: "best_models.txt"
+    media-type: text/tab-separated-values
+  dose_response_plots:
+    path: "dose_response*.svg"
+    media-type: image/svg+xml
+  overlay_plot:
+    path: "overlay*.svg"
+    media-type: image/svg+xml
+
+execution:
+  runners:
+    default:
+      type: SlivkaQueueRunner
+
+tests:
+  - applicable-runners: ["default"]
+    parameters:
+      input_file: dose_response/example_data.csv
+      enable_custom_models: true
+      show_dmax_lines: true
+      create_overlay: false
+      compound_col: Compound
+      concentration_col: Conc
+      response_col: Rab10
+      selection_metric: rmse
+      show_ic50_lines: true
+      file_format: svg

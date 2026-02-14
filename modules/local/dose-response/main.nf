@@ -35,52 +35,6 @@ process DOSE_RESPONSE {
     ARG_LIST=()
 
     
-    # Mapping for file_format
-    VAL="$file_format"
-    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
-        ARG_LIST+=("--file_format" "\$VAL")
-    fi
-    
-    # Mapping for add_timestamp
-    VAL="$add_timestamp"
-    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
-        if [ "\$VAL" = "true" ]; then
-            ARG_LIST+=("--add_timestamp")
-        fi
-    fi
-    
-    # Mapping for compound_colors
-    VAL="$compound_colors"
-    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
-        ARG_LIST+=("--compound_colors" "\$VAL")
-    fi
-    
-    # Mapping for input_file
-    VAL="$input_file"
-    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
-        ARG_LIST+=("--input_file" "\$VAL")
-    fi
-    
-    # Mapping for response_col
-    VAL="$response_col"
-    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
-        ARG_LIST+=("--response_col" "\$VAL")
-    fi
-    
-    # Mapping for show_dmax_lines
-    VAL="$show_dmax_lines"
-    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
-        if [ "\$VAL" = "true" ]; then
-            ARG_LIST+=("--show_dmax_lines")
-        fi
-    fi
-    
-    # Mapping for overlay_compounds
-    VAL="$overlay_compounds"
-    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
-        ARG_LIST+=("--overlay_compounds" "\$VAL")
-    fi
-    
     # Mapping for compound_col
     VAL="$compound_col"
     if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
@@ -113,6 +67,52 @@ process DOSE_RESPONSE {
         if [ "\$VAL" = "true" ]; then
             ARG_LIST+=("--show_ic50_lines")
         fi
+    fi
+    
+    # Mapping for file_format
+    VAL="$file_format"
+    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
+        ARG_LIST+=("--file_format" "\$VAL")
+    fi
+    
+    # Mapping for add_timestamp
+    VAL="$add_timestamp"
+    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
+        if [ "\$VAL" = "true" ]; then
+            ARG_LIST+=("--add_timestamp")
+        fi
+    fi
+    
+    # Mapping for response_col
+    VAL="$response_col"
+    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
+        ARG_LIST+=("--response_col" "\$VAL")
+    fi
+    
+    # Mapping for show_dmax_lines
+    VAL="$show_dmax_lines"
+    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
+        if [ "\$VAL" = "true" ]; then
+            ARG_LIST+=("--show_dmax_lines")
+        fi
+    fi
+    
+    # Mapping for overlay_compounds
+    VAL="$overlay_compounds"
+    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
+        ARG_LIST+=("--overlay_compounds" "\$VAL")
+    fi
+    
+    # Mapping for compound_colors
+    VAL="$compound_colors"
+    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
+        ARG_LIST+=("--compound_colors" "\$VAL")
+    fi
+    
+    # Mapping for input_file
+    VAL="$input_file"
+    if [ -n "\$VAL" ] && [ "\$VAL" != "null" ] && [ "\$VAL" != "[]" ]; then
+        ARG_LIST+=("--input_file" "\$VAL")
     fi
     
     python /app/dose_response_analyzer.py \
