@@ -122,7 +122,7 @@
 <li>Click <strong>Install</strong></li>
 </ol>
 <p><strong>ID</strong>: <code>dose-response</code><br>
-<strong>Version</strong>: 1.0.0<br>
+<strong>Version</strong>: 1.0.1<br>
 <strong>Category</strong>: analysis<br>
 <strong>Author</strong>: CauldronGO Team</p>
 <h2 id="description">Description</h2>
@@ -347,23 +347,23 @@
 <li><code>numpy&gt;=1.24.0</code></li>
 <li><code>pandas&gt;=2.0.0</code></li>
 <li><code>matplotlib&gt;=3.7.0</code></li>
-<li><code>dra&gt;=0.1.0</code></li>
+<li><code>dose-response-analyzer&gt;=0.1.0</code></li>
 </ul>
 <blockquote>
 <p><strong>Note</strong>: When you create a custom environment for this plugin, these dependencies will be automatically installed.</p>
 </blockquote>
 <h2 id="example-data">Example Data</h2>
 <p>This plugin includes example data for testing:</p>
-<pre><code class="language-yaml">  compound_col: Compound
-  response_col: Rab10
+<pre><code class="language-yaml">  enable_custom_models: true
   selection_metric: rmse
+  input_file: dose_response/example_data.csv
+  response_col: Rab10
+  show_ic50_lines: true
   show_dmax_lines: true
   file_format: svg
-  input_file: dose_response/example_data.csv
-  concentration_col: Conc
-  enable_custom_models: true
-  show_ic50_lines: true
   create_overlay: false
+  compound_col: Compound
+  concentration_col: Conc
 </code></pre>
 <p>Load example data by clicking the <strong>Load Example</strong> button in the UI.</p>
 <h2 id="usage">Usage</h2>

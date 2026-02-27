@@ -15,7 +15,7 @@
 4. Click **Install**
 
 **ID**: `dose-response`  
-**Version**: 1.0.0  
+**Version**: 1.0.1  
 **Category**: analysis  
 **Author**: CauldronGO Team
 
@@ -139,7 +139,7 @@ Dependencies are defined in: `requirements.txt`
 - `numpy>=1.24.0`
 - `pandas>=2.0.0`
 - `matplotlib>=3.7.0`
-- `dra>=0.1.0`
+- `dose-response-analyzer>=0.1.0`
 
 > **Note**: When you create a custom environment for this plugin, these dependencies will be automatically installed.
 
@@ -148,16 +148,16 @@ Dependencies are defined in: `requirements.txt`
 This plugin includes example data for testing:
 
 ```yaml
-  input_file: dose_response/example_data.csv
-  concentration_col: Conc
-  enable_custom_models: true
-  show_ic50_lines: true
-  create_overlay: false
-  compound_col: Compound
-  response_col: Rab10
-  selection_metric: rmse
   show_dmax_lines: true
   file_format: svg
+  create_overlay: false
+  compound_col: Compound
+  concentration_col: Conc
+  enable_custom_models: true
+  selection_metric: rmse
+  input_file: dose_response/example_data.csv
+  response_col: Rab10
+  show_ic50_lines: true
 ```
 
 Load example data by clicking the **Load Example** button in the UI.
